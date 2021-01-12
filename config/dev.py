@@ -1,3 +1,4 @@
+import os
 from typing import Union, Optional
 from pydantic import AnyHttpUrl, BaseSettings, IPvAnyAddress
 
@@ -16,11 +17,12 @@ class Config(BaseSettings):
     # MySQL
     MYSQL_USER: str = 'root'
     MYSQL_PASS: str = "zx3620382"
-    MYSQL_HOST: Union[AnyHttpUrl, IPvAnyAddress] = "*"
+    MYSQL_HOST: Union[AnyHttpUrl, IPvAnyAddress] = "127.0.0.1"
     MYSQL_DATABASE: str = 'fast_blog'
 
     # Mysql地址
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{MYSQL_USER}:{MYSQL_PASS}@{MYSQL_HOST}/{MYSQL_DATABASE}?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{0}:{1}@{2}/{3}?charset=utf8mb4".format(MYSQL_USER, MYSQL_PASS,
+                                                                                       MYSQL_HOST, MYSQL_DATABASE)
 
 
 config = Config()

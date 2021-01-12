@@ -1,7 +1,7 @@
 from typing import Generator
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 
 from config import config
@@ -20,3 +20,44 @@ def get_db() -> Generator:
         yield db
     finally:
         db.close()
+
+class MySQLSession(object):
+    """ session的上下文管理器 """
+
+    def __enter__(self):
+        self.session = SessionLocal()
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_trace):
+        self.session.close()
+        if exc_type is not None:
+            print(exc_trace)
+            return False
+        return True
+
+class BaseRepository:
+    def __init__(self, session=None):
+        self.session = session or SessionLocal()
+
+        if session is None:
+            self.is_local_session = True
+        else:
+            self.is_local_session = False
+
+    def __del__(self):
+        try:
+            if self.is_local_session:
+                self.session.close()
+        except:
+            pass
+
+    def __create__(self, model):
+        self.session.add(model)
+
+    def __commit__(self):
+        try:
+            if self.is_local_session:
+                self.session.commit()
+        except:
+            pass
+

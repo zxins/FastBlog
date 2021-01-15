@@ -8,7 +8,7 @@ from app.database import Base
 from app.utils import file
 
 
-class User(Base):
+class UserModel(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, nullable=False)
@@ -24,11 +24,11 @@ class User(Base):
 
     @staticmethod
     def add(db: Session, username: str, password: str):
-        user = db.query(User).filter(User.username == username).first()
+        user = db.query(UserModel).filter(UserModel.username == username).first()
         if user is not None:
             return user
 
-        user = User()
+        user = UserModel()
         user.username = username
         user.nickname = username
         user.password = generate_password_hash(password)
@@ -40,15 +40,15 @@ class User(Base):
 
     @staticmethod
     def get(db: Session, id: int):
-        return db.query(User).filter(id=id).first()
+        return db.query(UserModel).filter(UserModel.id == id).first()
 
     @staticmethod
     def get_by_name(db: Session, username: str):
-        return db.query(User).filter(username=username).first()
+        return db.query(UserModel).filter(UserModel.username == username).first()
 
     @staticmethod
     def page(db: Session, page: int, per_page: int):
-        return db.query(User).paginate(page, per_page=per_page)
+        return db.query(UserModel).paginate(page, per_page=per_page)
 
     def setting(self, nickname: str):
         self.nickname = nickname

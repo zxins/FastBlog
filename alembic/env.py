@@ -28,7 +28,7 @@ target_metadata = [
     # book.Book.metadata,
     # book.BookCatalog.metadata,
     # book.BookImage.metadata,
-    user.User.metadata,
+    user.UserModel.metadata,
 ]
 
 

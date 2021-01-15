@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+
 from app.config import config
 from app.api.v1 import v1_router
 from app.admin import admin_router
@@ -15,4 +17,5 @@ def create_app():
     app.include_router(v1_router, prefix="/api/v1")
     app.include_router(admin_router, prefix='/admin')
 
+    app.mount('/static', StaticFiles(directory=config.STATIC_FOLDER), name="static")
     return app

@@ -5,13 +5,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from app.config import config
-from app.plugin import app_sqlalchemy
+from app.plugin import sqlalchemy_paginate
 
 engine = create_engine(
     config.SQLALCHEMY_DATABASE_URI
 )
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, query_cls=app_sqlalchemy.BaseQuery)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, query_cls=sqlalchemy_paginate.BaseQuery)
 
 Base = declarative_base()
 
